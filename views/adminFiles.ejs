@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <%- include('../views/partials/head.ejs') %>
+  <title>All Uploaded Files (Admin)</title>
+</head>
+<body class="bg-dark text-light">
+<div class="container my-5">
+  <h1 class="mb-4">All Uploaded Files    ADMIN</h1>
+  <table class="table table-dark table-striped">
+    <thead>
+      <tr>
+        <th>Filename</th>
+        <th>Mahasiswa</th>
+        <th>Uploaded At</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% files.forEach(file => { %>
+      <tr>
+        <td><%= file.originalname %></td>
+        <td><%= file.User.username %></td>
+        <td><%= new Date(file.createdAt).toLocaleString() %></td>
+        <td>
+          <!-- Download -->
+          <a href="/files/admin/download/<%= file.id %>" class="btn btn-success btn-sm m-1">
+            Download
+          </a>
+
+          <!-- Delete -->
+          <form action="/files/admin/delete/<%= file.id %>" method="POST" class="d-inline">
+            <button type="submit" class="btn btn-danger btn-sm m-1" onclick="return confirm('Are you sure to delete this file?')">
+              Delete
+            </button>
+          </form>
+
+          <!-- Preview -->
+          <button class="btn btn-primary btn-sm m-1 preview-btn" data-bs-toggle="modal" data-bs-target="#previewModal" data-file-id="<%= file.id %>">
+            Preview
+          </button>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal untuk Preview -->
+<div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header">
+        <h5 class="modal-title" id="previewModalLabel">File Preview</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="previewContent">
+        <!-- Isi file akan ditampilkan di sini -->
+        Loading...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const previewButtons = document.querySelectorAll('.preview-btn');
+    const previewContent = document.getElementById('previewContent');
+
+    previewButtons.forEach(button => {
+      button.addEventListener('click', async () => {
+        const fileId = button.getAttribute('data-file-id');
+        const originalName = button.getAttribute('data-original-name'); // Ambil nama asli file
+        try {
+          const response = await fetch(`/files/admin/preview/${fileId}`);
+          if (!response.ok) {
+            throw new Error('Failed to load file content.');
+          }
+          const fileContent = await response.text();
+
+          // Cek ekstensi file
+          const isImage = /\.(jpg|jpeg|png|gif)$/i.test(originalName);
+          const isDoc = /\.(docx|pdf)$/i.test(originalName);
+
+          if (isImage) {
+            // Tampilkan pratinjau gambar
+            previewContent.innerHTML = `<img src="/uploads/${file.filename}" class="img-fluid" alt="Preview Image">`;
+          } else if (isDoc) {
+            // Tampilkan pratinjau dokumen menggunakan layanan eksternal (misalnya Google Docs Viewer)
+            previewContent.innerHTML = `
+              <iframe src="https://docs.google.com/gview?url=http://localhost:3000/uploads/${file.filename}&embedded=true" style="width:100%; height:500px;" frameborder="0"></iframe>
+            `;
+          } else {
+            // Tampilkan isi file sebagai teks
+            previewContent.textContent = fileContent;
+          }
+        } catch (error) {
+          console.error('Error fetching file content:', error.message);
+          previewContent.textContent = `Error loading file content: ${error.message}`;
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>

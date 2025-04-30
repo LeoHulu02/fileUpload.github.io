@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <%- include('../partials/head') %>
+  <title>Login</title>
+</head>
+<body class="d-flex justify-content-center align-items-center vh-100">
+  <div class="card p-4 shadow" style="width: 24rem;">
+    <h3 class="text-center mb-3">Login</h3>
+    <% if (message.length > 0) { %>
+      <div class="alert alert-danger"><%= message %></div>
+    <% } %>
+    <form method="POST" action="/login">
+      <div class="mb-3">
+        <input type="text" name="username" class="form-control" placeholder="Username" required/>
+      </div>
+      <div class="mb-3">
+        <input type="password" name="password" class="form-control" placeholder="Password" required/>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Login</button>
+    </form>
+    <div class="text-center mt-3">
+      <a href="/register">Belum punya akun? Register</a>
+    </div>
+  </div>
+</body>
+</html>
