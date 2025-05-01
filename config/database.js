@@ -1,9 +1,15 @@
 const { Sequelize } = require('sequelize');
-const path = require('path');
 
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: path.join(__dirname, '../db/database.sqlite'),
+// Inisialisasi Sequelize
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: 'postgres',
+  dialectOptions: {
+    ssl: false, // Opsional: aktifkan SSL jika diperlukan
+  },
 });
 
-module.exports = { sequelize };
+// Log untuk debugging
+console.log('Sequelize Object Initialized:', sequelize);
+
+// Ekspor objek Sequelize
+module.exports = sequelize;

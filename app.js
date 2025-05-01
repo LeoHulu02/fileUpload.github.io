@@ -4,9 +4,11 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const path = require('path');
 const bcrypt = require('bcryptjs');
-const { sequelize } = require('./config/database');
+const sequelize  = require('./config/database');
 const { User } = require('./models/User'); 
 const app = express();
+
+console.log('Sequelize Object in App:', sequelize);
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));

@@ -1,7 +1,9 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database').sequelize;
+const sequelize = require('../config/database');
 const { User } = require('../models/User'); // Pastikan impor ini benar
 console.log(User);
+
+console.log('Sequelize Object in File Model:', sequelize);
 
 const File = sequelize.define('File', {
   filename: {

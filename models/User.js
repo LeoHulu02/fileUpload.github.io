@@ -1,24 +1,35 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database').sequelize;
+const sequelize = require('../config/database');
 
-const User = sequelize.define('User', {
-  username: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false, // Pastikan nama wajib diisi
-  },
-  isAdmin: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-  },
-});
+console.log('Sequelize Object in User Model:', sequelize);
 
-module.exports = { User }; // Ubah ekspor agar sesuai dengan impor
+// Definisikan model User
+const User = sequelize.define(
+  'User', // Nama model
+  {
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false, // Username wajib diisi
+      // unique: true, // Username harus unik
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false, // Password wajib diisi
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false, // Nama wajib diisi
+    },
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false, // Default value untuk isAdmin adalah false
+    },
+  },
+  {
+    tableName: 'users', // Nama tabel di database (opsional, jika ingin eksplisit)
+    timestamps: true, // Aktifkan timestamps (createdAt dan updatedAt secara otomatis ditambahkan)
+  }
+);
+
+// Ekspor model User
+module.exports = { User };
