@@ -4,13 +4,14 @@ const { Sequelize } = require('sequelize');
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: 'postgres',
   dialectOptions: {
-    ssl: true, // Opsional: aktifkan SSL jika diperlukan
-    rejectUnauthorized: false, 
-  },
+    ssl: {
+      require: true,            // Wajib SSL
+      rejectUnauthorized: false // Abaikan validasi sertifikat self-signed
+    }
+  }
 });
 
 // Log untuk debugging
 console.log('Sequelize Object Initialized:', sequelize);
 
-// Ekspor objek Sequelize
 module.exports = sequelize;
