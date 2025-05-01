@@ -59,11 +59,12 @@ sequelize.sync().then(async () => {
 
 
   // Start the server after syncing the database and ensuring admin exists
-  const PORT = process.env.PORT || 3000;
+  const PORT = process.env.PORT || 8080; // Gunakan default 8080 sebagai cadangan aman
   console.log('PORT ENV:', process.env.PORT);
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`✅ Server running on port: ${PORT}`);
   });
+
 
 }).catch((error) => {
   console.error('Failed to sync database:', error);
