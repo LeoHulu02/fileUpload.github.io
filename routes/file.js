@@ -42,10 +42,10 @@ router.post('/upload', isAuthenticated, upload.single('file'), async (req, res) 
 });
 
 // List semua file milik user
-// router.get('/all', isAuthenticated, async (req, res) => {
-//   const files = await File.findAll({ where: { userId: req.session.userId } });
-//   res.render('allFiles', { files });
-// });
+router.get('/all', isAuthenticated, async (req, res) => {
+  const files = await File.findAll({ where: { userId: req.session.userId } });
+  res.render('allFiles', { files });
+});
 
 // Delete file user
 router.post('/delete/:id', isAuthenticated, async (req, res) => {
