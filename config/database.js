@@ -4,7 +4,8 @@ const { Sequelize } = require('sequelize');
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: 'postgres',
   dialectOptions: {
-    ssl: false, // Opsional: aktifkan SSL jika diperlukan
+    ssl: true, // Opsional: aktifkan SSL jika diperlukan
+    rejectUnauthorized: false, 
   },
 });
 
