@@ -60,10 +60,10 @@ sequelize.sync().then(async () => {
 
   // Start the server after syncing the database and ensuring admin exists
   const PORT = process.env.PORT || 3000;
+  console.log('PORT ENV:', process.env.PORT);
   app.listen(PORT, () => {
-    console.log(`Server running on port: ${PORT}`);
+    console.log(`✅ Server running on port: ${PORT}`);
   });
-
 
 }).catch((error) => {
   console.error('Failed to sync database:', error);
