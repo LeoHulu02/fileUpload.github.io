@@ -1,19 +1,24 @@
 const { Sequelize } = require('sequelize');
+require('dotenv').config();
 
-// Inisialisasi Sequelize
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
-  
   dialect: 'postgres',
   dialectOptions: {
     ssl: {
-      require: true,            // Wajib SSL
-      rejectUnauthorized: false // Abaikan validasi sertifikat self-signed
-    }
-  }
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
+  logging: false, // Nonaktifkan query log jika tidak dibutuhkan
 });
-console.log('DATABASE_URL:', process.env.DATABASE_URL);
 
-// Log untuk debugging
-console.log('Sequelize Object Initialized:', sequelize);
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('✅ Connected to PostgreSQL on Railway');
+  } catch (err) {
+    console.error('❌ Unable to connect to PostgreSQL:', err);
+  }
+})();
 
 module.exports = sequelize;
