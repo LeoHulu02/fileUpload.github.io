@@ -8,7 +8,7 @@ const sequelize  = require('./config/database');
 const { User } = require('./models/User'); 
 const app = express();
 
-console.log('Sequelize Object in App:', sequelize);
+// console.log('Sequelize Object in App:', sequelize);
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
